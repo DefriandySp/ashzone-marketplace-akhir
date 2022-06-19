@@ -67,11 +67,12 @@
                             <select class="form-control" name="province_id" id="province_id" required>
                                 <option value="">Pilih Propinsi</option>
                                 <!-- LOOPING DATA PROVINCE UNTUK DIPILIH OLEH CUSTOMER -->
-                                <!-- {{ count($provinces['rajaongkir']['results']) }} -->
+                                @if(!empty($provinces['rajaongkir']['results']))
                                 @for($i = 0; $i< count($provinces['rajaongkir']['results']); $i++) <option
                                     value="{{ $provinces['rajaongkir']['results'][$i]['province_id'] }}">
                                     {{ $provinces['rajaongkir']['results'][$i]['province'] }}</option>
                                     @endfor
+                                    @endif
                             </select>
                             <p class="text-danger">{{ $errors->first('province_id') }}</p>
                         </div>
@@ -201,7 +202,7 @@ $('#city_id').on('change', function() {
     //         });
     //     }
     // });
-    $('#courier').append('<option value="">Pilih Pengiriman</option>');
+    $('#courier').append('<option value="">Pilih Kurir</option>');
     $('#courier').append('<option value="jne">JNE</option>');
     $('#courier').append('<option value="pos">POS INDONESIA</option>');
     $('#courier').append('<option value="tiki">TIKI</option>');
@@ -238,7 +239,10 @@ $('#city_id').on('change', function() {
 // })
 
 $('#courier').on('change', function() {
+    // ini city from diganti ya def pakai sesseion utk mainkan data nya data distric di tb_costumer diganti ke city karna ongkir batas di citu 
     var city_from = 318;
+    // endd
+
     var city_id = $('#city_id').val();
     var sub_total = $('#total_all').val();
     // let split = $(this).val().split('-')
