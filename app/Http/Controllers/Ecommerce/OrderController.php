@@ -22,7 +22,7 @@ class OrderController extends Controller
 
     public function view($invoice)
     {
-        $order = Order::with(['district.city.province', 'details', 'details.product', 'payment'])
+        $order = Order::with(['city.province', 'details', 'details.product', 'payment'])
             ->where('invoice', $invoice)->first();
 
         if (Order::where('invoice', $invoice)->exists()){

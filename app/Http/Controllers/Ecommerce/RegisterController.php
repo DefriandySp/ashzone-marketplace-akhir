@@ -29,8 +29,7 @@ class RegisterController extends Controller
             'email' => 'required|email',
             'customer_address' => 'required|string',
             'province_id' => 'required|exists:provinces,id',
-            'city_id' => 'required|exists:cities,id',
-            'district_id' => 'required|exists:districts,id'
+            'city_id' => 'required|exists:cities,id'
         ]);
 
         try {
@@ -42,7 +41,7 @@ class RegisterController extends Controller
                     'password' => $password, 
                     'phone_number' => $request->customer_phone,
                     'address' => $request->customer_address,
-                    'district_id' => $request->district_id,
+                    'city_id' => $request->city_id,
                     'activate_token' => Str::random(30),
                     'status' => false
                 ]);

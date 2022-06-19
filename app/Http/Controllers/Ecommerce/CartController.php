@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\Province;
 use App\City;
-use App\District;
 use App\Customer;
 use App\Order;
 use App\OrderDetail;
@@ -146,12 +145,12 @@ class CartController extends Controller
         return view('ecommerce.checkout', compact('provinces', 'carts', 'subtotal', 'weight'));
     }
 
-    public function getCity(Request $request)
+    public function getProvince(Request $request)
     {
         $input = $request->all();
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.rajaongkir.com/starter/city?province=".$input['province_id']."",
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/province?id=".$input['province_id']."",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -175,12 +174,12 @@ class CartController extends Controller
         }
     }
 
-    public function getDistrict()
+    public function getCity()
     {
         $province_id = $this->input->get('province_id');
         $city_id = $this->input->get('city_id');
-        var_dump($province_id);
-        var_dump($city_id);
+        // var_dump($province_id);
+        // var_dump($city_id);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api.rajaongkir.com/starter/city?id='".$city_id."'&province='".$province_id."'",
@@ -214,9 +213,8 @@ class CartController extends Controller
             'customer_phone' => 'required',
             'email' => 'required|email',
             'customer_address' => 'required|string',
-            'province_id' => 'required|exists:provinces,id',
-            'city_id' => 'required|exists:cities,id',
-            'district_id' => 'required|exists:districts,id',
+            'province_id' => 'required|exists:cities,id',
+            'id' => 'required|exists:cities,id',
             'courier' => 'required'
         ]);
 
@@ -243,7 +241,7 @@ class CartController extends Controller
                     'password' => $password, 
                     'phone_number' => $request->customer_phone,
                     'address' => $request->customer_address,
-                    'district_id' => $request->district_id,
+                    'city_id' => $request->city_id,
                     'activate_token' => Str::random(30),
                     'status' => false
                 ]);
@@ -256,7 +254,7 @@ class CartController extends Controller
                 'customer_name' => $request->customer_name,
                 'customer_phone' => $request->customer_phone,
                 'customer_address' => $request->customer_address,
-                'district_id' => $request->district_id,
+                'city_id' => $request->city_id,
                 'subtotal' => $subtotal,
                 'cost' => $shipping[2], 
                 'shipping' => $shipping[0] . '-' . $shipping[1]
@@ -295,7 +293,7 @@ class CartController extends Controller
 
     public function checkoutFinish($invoice)
     {
-        $order = Order::with(['district.city'])->where('invoice', $invoice)->first();
+        $order = Order::with(['city.province'])->where('invoice', $invoice)->first();
         if (Order::where('invoice', $invoice)->exists()){
             return view('ecommerce.checkout_finish', compact('order'));
         }else {

@@ -19,7 +19,7 @@ class CreateCustomersTable extends Migration
             $table->string('email')->unique(); 
             $table->string('phone_number');
             $table->string('address');
-            $table->unsignedBigInteger('district_id'); 
+            $table->unsignedBigInteger('city_id'); 
             $table->boolean('status')->default(false); 
             $table->timestamps();
         });

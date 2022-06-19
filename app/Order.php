@@ -9,9 +9,9 @@ class Order extends Model
     protected $guarded = [];
     protected $appends = ['status_label', 'total'];
     
-    public function district()
+    public function city()
     {
-        return $this->belongsTo(District::class);
+        return $this->belongsTo(Province::class);
     }
 
     //Relasi ke details

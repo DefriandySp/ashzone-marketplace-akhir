@@ -65,19 +65,19 @@
                                 <p class="text-danger">{{ $errors->first('province_id') }}</p>
                             </div>
                     
-                    <!-- ADAPUN DATA KOTA DAN KECAMATAN AKAN DI RENDER SETELAH PROVINSI DIPILIH -->
+                    <!-- ADAPUN DATA KOTA AKAN DI RENDER SETELAH PROVINSI DIPILIH -->
                             <div class="col-md-12 form-group">
                                 <select class="form-control" name="city_id" id="city_id" required>
                                     <option value="">Pilih Kabupaten/Kota</option>
                                 </select>
                                 <p class="text-danger">{{ $errors->first('city_id') }}</p>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <!-- <div class="col-md-12 form-group">
                                 <select class="form-control" name="district_id" id="district_id" required>
                                     <option value="">Pilih Kecamatan</option>
                                 </select>
                                 <p class="text-danger">{{ $errors->first('district_id') }}</p>
-                            </div>
+                            </div> -->
 							<div class="col-md-12 form-group">
 								<button type="submit" value="submit" class="btn submit_btn">Register</button>
 							</div>

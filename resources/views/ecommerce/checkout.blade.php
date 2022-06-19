@@ -27,14 +27,13 @@
     <div class="container">
         <div class="billing_details">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-7">
                     <h3>Informasi Pengiriman</h3>
                     @if (session('error'))
                     <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
-                    <form class="row contact_form" action="{{ route('front.store_checkout') }}" method="post"
-                        novalidate="novalidate">
+                    <form class="row contact_form" action="{{ route('front.store_checkout') }}" method="post" novalidate="novalidate">
                         @csrf
                         <div class="col-md-12 form-group p_star">
                             <label for="">Nama Penerima</label>
@@ -49,9 +48,7 @@
                         <div class="col-md-6 form-group p_star">
                             <label for="">Email</label>
                             @if (auth()->guard('customer')->check())
-                            <input type="email" class="form-control" id="email" name="email"
-                                value="{{ auth()->guard('customer')->user()->email }}" required
-                                {{ auth()->guard('customer')->check() ? 'readonly':'' }}>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ auth()->guard('customer')->user()->email }}" required {{ auth()->guard('customer')->check() ? 'readonly':'' }}>
                             @else
                             <input type="email" class="form-control" id="email" name="email" required>
                             @endif
@@ -66,10 +63,9 @@
                             <label for="">Propinsi</label>
                             <select class="form-control" name="province_id" id="province_id" required>
                                 <option value="">Pilih Propinsi</option>
-                                <!-- LOOPING DATA PROVINCE UNTUK DIPILIH OLEH CUSTOMER -->
+                                <!-- LOOPING DATA COSTUMER -->
                                 @if(!empty($provinces['rajaongkir']['results']))
-                                @for($i = 0; $i< count($provinces['rajaongkir']['results']); $i++) <option
-                                    value="{{ $provinces['rajaongkir']['results'][$i]['province_id'] }}">
+                                @for($i = 0; $i< count($provinces['rajaongkir']['results']); $i++) <option value="{{ $provinces['rajaongkir']['results'][$i]['province_id'] }}">
                                     {{ $provinces['rajaongkir']['results'][$i]['province'] }}</option>
                                     @endfor
                                     @endif
@@ -77,7 +73,7 @@
                             <p class="text-danger">{{ $errors->first('province_id') }}</p>
                         </div>
 
-                        <!-- ADAPUN DATA KOTA DAN KECAMATAN AKAN DI RENDER SETELAH PROVINSI DIPILIH -->
+
                         <div class="col-md-12 form-group p_star">
                             <label for="">Kabupaten / Kota</label>
                             <select class="form-control" name="city_id" id="city_id" required>
@@ -100,10 +96,10 @@
                             </select>
                             <p class="text-danger">{{ $errors->first('courier') }}</p>
                         </div>
-                        <!-- ADAPUN DATA KOTA DAN KECAMATAN AKAN DI RENDER SETELAH PROVINSI DIPILIH -->
+
 
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-5">
                     <div class="order_box">
                         <h2>Ringkasan Pesanan</h2>
                         <ul class="list">
@@ -114,8 +110,8 @@
                             </li>
                             @foreach ($carts as $cart)
                             <li>
-                                <a href="#">{{ \Str::limit($cart['product_name'], 10) }}
-                                    <span class="middle">x {{ $cart['qty'] }}</span>
+                                <a href="#">{{ \Str::limit($cart['product_name'], 30) }}
+                                    <span class="middle">x {{ $cart['qty']   }}</span>
                                     <span class="last">Rp {{ number_format($cart['product_price']) }}</span>
                                 </a>
                             </li>
@@ -153,122 +149,67 @@
 
 @section('js')
 <script>
-//KETIKA SELECT BOX DENGAN ID province_id DIPILIH
-$('#province_id').on('change', function() {
-    //MAKA AKAN MELAKUKAN REQUEST KE URL /API/CITY
-    //DAN MENGIRIMKAN DATA PROVINCE_ID
-    $.ajax({
-        url: "{{ url('/api/city') }}",
-        type: "GET",
-        data: {
-            province_id: $(this).val()
-        },
-        success: function(html) {
-            //SETELAH DATA DITERIMA, SELEBOX DENGAN ID CITY_ID DI KOSONGKAN
-            $('#city_id').empty()
-            $('#courier').empty()
+    //KETIKA SELECT BOX DENGAN ID province_id DIPILIH
+    $('#province_id').on('change', function() {
+        //MAKA AKAN MELAKUKAN REQUEST KE URL /API/CITY
+        //DAN MENGIRIMKAN DATA PROVINCE_ID
+        $.ajax({
+            url: "{{ url('/api/city') }}",
+            type: "GET",
+            data: {
+                province_id: $(this).val()
+            },
+            success: function(html) {
 
-            //KEMUDIAN APPEND DATA BARU YANG DIDAPATKAN DARI HASIL REQUEST VIA AJAX
-            //UNTUK MENAMPILKAN DATA KABUPATEN / KOTA
-            $('#city_id').append('<option value="">Pilih Kabupaten/Kota</option>')
-            $.each(html.data, function(key, item) {
-                $('#city_id').append('<option value="' + item.city_id + '">' + item
-                    .city_name +
-                    '</option>')
-            })
-        }
-    });
-})
+                $('#city_id').empty()
+                $('#courier').empty()
 
-//LOGICNYA SAMA DENGAN CODE DIATAS HANYA BERBEDA OBJEKNYA SAJA
-$('#city_id').on('change', function() {
-    $('#courier').empty()
 
-    // var province_id = $('#province_id').val();
-    // var city_id = $('#city_id').val();
-    // $.ajax({
-    //     url: "{{ url('/api/district') }}",
-    //     type: "GET",
-    //     data: {
-    //         city_id: city_id,
-    //         province_id: province_id
-    //     },
-    //     success: function(html) {
-    //         $('#district_id').empty()
-    //         $('#district_id').append('<option value="">Pilih Kecamatan</option>')
-    //         $.each(html.data, function(key, item) {
-    //             $('#district_id').append('<option value="' + item.id + '">' + item.name +
-    //                 '</option>')
-    //         });
-    //     }
-    // });
-    $('#courier').append('<option value="">Pilih Kurir</option>');
-    $('#courier').append('<option value="jne">JNE</option>');
-    $('#courier').append('<option value="pos">POS INDONESIA</option>');
-    $('#courier').append('<option value="tiki">TIKI</option>');
+                $('#city_id').append('<option value="">Pilih Kabupaten/Kota</option>')
+                $.each(html.data, function(key, item) {
+                    $('#city_id').append('<option value="' + item.city_id + '">' + item
+                        .city_name +
+                        '</option>')
+                })
+            }
+        });
+    })
 
-})
+    //LOGICNYA SAMA DENGAN CODE DIATAS HANYA BERBEDA OBJEKNYA SAJA
+    $('#city_id').on('change', function() {
+        $('#courier').empty()
 
-// $('#district_id').on('change', function() {
-//     $('#courier').empty()
-//     $('#courier').append('<option value="">Loading...</option>')
+        $('#courier').append('<option value="">Pilih Kurir</option>');
+        $('#courier').append('<option value="jne">JNE</option>');
 
-//     $.ajax({
-//         url: "{{ url('/api/cost') }}",
-//         type: "POST",
-//         data: {
-//             destination: $(this).val(),
-//             weight: $('#weight').val()
-//         },
-//         success: function(html) {
+    })
 
-//             $('#courier').empty()
-//             $('#courier').append('<option value="">Pilih Kurir</option>')
+    $('#courier').on('change', function() {
+        // ini city from diganti ya def pakai sesseion utk mainkan data nya data distric di tb_costumer diganti ke city karna ongkir batas di citu 
+        var city_from = $request - > session() - > get('city_id');
+        // endd
 
-//             //LOOPING DATA ONGKOS KIRIM
-//             $.each(html.data.results, function(key, item) {
-//                 let courier = item.courier + ' - ' + item.service + ' (Rp ' + item.cost +
-//                     ')'
-//                 let value = item.courier + '-' + item.service + '-' + item.cost
-//                 //DAN MASUKKAN KE DALAM OPTION SELECT BOX
-//                 $('#courier').append('<option value="' + value + '">' + courier +
-//                     '</option>')
-//             })
-//         }
-//     });
-// })
+        var city_id = $('#city_id').val();
+        var sub_total = $('#total_all').val();
 
-$('#courier').on('change', function() {
-    // ini city from diganti ya def pakai sesseion utk mainkan data nya data distric di tb_costumer diganti ke city karna ongkir batas di citu 
-    var city_from = 318;
-    // endd
-
-    var city_id = $('#city_id').val();
-    var sub_total = $('#total_all').val();
-    // let split = $(this).val().split('-')
-    // $('#ongkir').text('Rp ' + split[2])
-
-    // let subtotal = "{{ $subtotal }}"
-    // let total = parseInt(subtotal) + parseInt(split['2'])
-    // $('#total').text('Rp' + total)
-    $.ajax({
-        url: "{{ url('/api/cost') }}",
-        type: "POST",
-        data: {
-            city_from: city_from,
-            city_id: city_id,
-            weight: $('#weight').val(),
-            courier: $('#courier').val()
-        },
-        success: function(html) {
-            $.each(html.data, function(key, item) {
-                $('#cost').val(item.costs[0].cost[0].value);
-                $('#ongkir').html("Rp " + item.costs[0].cost[0].value);
-                var total = parseInt(sub_total) + parseInt(item.costs[0].cost[0].value);
-                $('#total').html(total);
-            })
-        }
-    });
-})
+        $.ajax({
+            url: "{{ url('/api/cost') }}",
+            type: "POST",
+            data: {
+                city_from: city_from,
+                city_id: city_id,
+                weight: $('#weight').val(),
+                courier: $('#courier').val()
+            },
+            success: function(html) {
+                $.each(html.data, function(key, item) {
+                    $('#cost').val(item.costs[0].cost[0].value);
+                    $('#ongkir').html("Rp " + item.costs[0].cost[0].value);
+                    var total = parseInt(sub_total) + parseInt(item.costs[0].cost[0].value);
+                    $('#total').html(total);
+                })
+            }
+        });
+    })
 </script>
 @endsection
