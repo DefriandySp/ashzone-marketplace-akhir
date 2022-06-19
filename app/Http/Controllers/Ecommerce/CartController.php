@@ -84,30 +84,58 @@ class CartController extends Controller
 
     public function getCourier(Request $request)
     {
-        $this->validate($request, [
-            'destination' => 'required',
-            'weight' => 'required|integer'
-        ]);
-        
-        $url = 'https://ruangapi.com/api/v1/shipping';
-        $key = env('RUANGAPI_KEY');
+        $input = $request->all();
+       $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+             CURLOPT_POSTFIELDS => "origin=".$input['city_from']."&destination=".$input['city_id']."&weight=".$input['weight']."&courier=".$input['courier']."",
+            CURLOPT_HTTPHEADER => array(
+                "content-type: application/x-www-form-urlencoded",
+                "key: 4e06fbae528e77b0fb70b9919fe96891"
+            ),
+        ));
 
-        $response = Http::withHeaders([
-            'Authorization' => $key
-        ])->post($url, [
-            'origin' => 22, 
-            'destination' => $request->destination,
-            'weight' => $request->weight,
-            'courier' => 'jnt,tiki,sicepat' 
-        ]);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+        $cost = json_decode($response,TRUE);
         
-        $body = json_decode($response->getBody(), true);
-        return $body;
+        if($cost['rajaongkir']['status']['code'] == 200){
+            return response()->json(['status' => 'success', 'data' => $cost['rajaongkir']['results']]);
+        }else{
+            return response()->json(['status' => 'failed', 'data' => "data tidak ada"]);
+        }
     }
 
     public function checkout()
     {
-        $provinces = Province::orderBy('created_at', 'DESC')->get();
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/province",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "key: 4e06fbae528e77b0fb70b9919fe96891"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+        $provinces = json_decode($response,TRUE);
+        // $provinces = Province::orderBy('created_at', 'DESC')->get();
         $carts = $this->getCarts(); 
         $subtotal = collect($carts)->sum(function($q) {
             return $q['qty'] * $q['product_price'];
@@ -118,16 +146,65 @@ class CartController extends Controller
         return view('ecommerce.checkout', compact('provinces', 'carts', 'subtotal', 'weight'));
     }
 
-    public function getCity()
+    public function getCity(Request $request)
     {
-        $cities = City::where('province_id', request()->province_id)->get();
-        return response()->json(['status' => 'success', 'data' => $cities]);
+        $input = $request->all();
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/city?province=".$input['province_id']."",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "key: 4e06fbae528e77b0fb70b9919fe96891"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        $city = json_decode($response,TRUE);
+        if($city['rajaongkir']['status']['code'] == 200){
+            return response()->json(['status' => 'success', 'data' => $city['rajaongkir']['results']]);
+        }else {
+            return response()->json(['status' => 'failed', 'data' =>"data tidak ada"]);
+
+        }
     }
 
     public function getDistrict()
     {
-        $districts = District::where('city_id', request()->city_id)->get();
-        return response()->json(['status' => 'success', 'data' => $districts]);
+        $province_id = $this->input->get('province_id');
+        $city_id = $this->input->get('city_id');
+        var_dump($province_id);
+        var_dump($city_id);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/city?id='".$city_id."'&province='".$province_id."'",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "key: 4e06fbae528e77b0fb70b9919fe96891"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+        if(response){
+            return response()->json(['status' => 'success', 'data' => $response]);
+        }else {
+            return response()->json(['status' => 'failed', 'data' =>"data tidak ada"]);
+
+        }
     }
 
     public function processCheckout(Request $request)
