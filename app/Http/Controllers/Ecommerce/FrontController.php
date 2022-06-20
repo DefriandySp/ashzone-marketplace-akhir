@@ -76,7 +76,7 @@ class FrontController extends Controller
 
     public function customerSettingForm()
     {
-        $customer = auth()->guard('customer')->user()->load('district');
+        $customer = auth()->guard('customer')->user()->load('city');
         $provinces = Province::orderBy('name', 'ASC')->get();
         return view('ecommerce.setting', compact('customer', 'provinces'));
     }
@@ -87,12 +87,12 @@ class FrontController extends Controller
             'name' => 'required|string|max:100',
             'phone_number' => 'required|max:15',
             'address' => 'required|string',
-            'district_id' => 'required|exists:districts,id',
+            'city_id' => 'required|exists:cities,id',
             'password' => 'nullable|string|min:6'
         ]);
 
         $user = auth()->guard('customer')->user();
-        $data = $request->only('name', 'phone_number', 'address', 'district_id');
+        $data = $request->only('name', 'phone_number', 'address', 'city_id');
 
         if ($request->password != '') {
             $data['password'] = $request->password;

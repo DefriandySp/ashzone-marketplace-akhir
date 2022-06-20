@@ -116,21 +116,5 @@
     });
 })
     
-
-        // //LOGICNYA SAMA DENGAN CODE DIATAS HANYA BERBEDA OBJEKNYA SAJA
-        // $('#city_id').on('change', function() {
-        //     $.ajax({
-        //         url: "{{ url('/api/district') }}",
-        //         type: "GET",
-        //         data: { city_id: $(this).val() },
-        //         success: function(html){
-        //             $('#district_id').empty()
-        //             $('#district_id').append('<option value="">Pilih Kecamatan</option>')
-        //             $.each(html.data, function(key, item) {
-        //                 $('#district_id').append('<option value="'+item.id+'">'+item.name+'</option>')
-        //             })
-        //         }
-        //     });
-        // })
     </script>
 @endsection

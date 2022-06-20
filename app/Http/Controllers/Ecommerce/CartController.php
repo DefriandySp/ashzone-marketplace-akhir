@@ -246,7 +246,7 @@ class CartController extends Controller
                     'password' => $password, 
                     'phone_number' => $request->customer_phone,
                     'address' => $request->customer_address,
-                    'district_id' => $request->district_id,
+                    'city_id' => $request->city_id,
                     'activate_token' => Str::random(30),
                     'status' => false
                 ]);
@@ -259,7 +259,7 @@ class CartController extends Controller
                 'customer_name' => $request->customer_name,
                 'customer_phone' => $request->customer_phone,
                 'customer_address' => $request->customer_address,
-                'district_id' => $request->district_id,
+                'city_id' => $request->city_id,
                 'subtotal' => $subtotal,
                 'cost' => $shipping[2], 
                 'shipping' => $shipping[0] . '-' . $shipping[1]

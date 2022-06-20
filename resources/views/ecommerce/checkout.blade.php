@@ -210,9 +210,9 @@ $('#city_id').on('change', function() {
 })
 
 $('#courier').on('change', function() {
-    // ini city from diganti ya def pakai sesseion utk mainkan data nya data distric di tb_costumer diganti ke city karna ongkir batas di citu 
+    // 
     var city_from = 93;
-    // endd
+    // 
 
     var city_id = $('#city_id').val();
     var sub_total = $('#total_all').val();
