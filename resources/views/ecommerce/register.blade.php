@@ -72,12 +72,12 @@
                                 </select>
                                 <p class="text-danger">{{ $errors->first('city_id') }}</p>
                             </div>
-                            <div class="col-md-12 form-group">
+                            <!-- <div class="col-md-12 form-group">
                                 <select class="form-control" name="district_id" id="district_id" required>
                                     <option value="">Pilih Kecamatan</option>
                                 </select>
                                 <p class="text-danger">{{ $errors->first('district_id') }}</p>
-                            </div>
+                            </div> -->
 							<div class="col-md-12 form-group">
 								<button type="submit" value="submit" class="btn submit_btn">Register</button>
 							</div>
@@ -91,40 +91,46 @@
 
 @section('js')
     <script>
-        //KETIKA SELECT BOX DENGAN ID province_id DIPILIH
         $('#province_id').on('change', function() {
-            //MAKA AKAN MELAKUKAN REQUEST KE URL /API/CITY DENGAN MENGIRIM PROVINCE_ID
-            $.ajax({
-                url: "{{ url('/api/city') }}",
-                type: "GET",
-                data: { province_id: $(this).val() },
-                success: function(html){
-                    //SETELAH DATA DITERIMA, SELECTBOX DENGAN ID CITY_ID DI KOSONGKAN
-                    $('#city_id').empty()
-                    //KEMUDIAN APPEND DATA BARU YANG DIDAPATKAN DARI HASIL REQUEST VIA AJAX
-                    //UNTUK MENAMPILKAN DATA KABUPATEN / KOTA
-                    $('#city_id').append('<option value="">Pilih Kabupaten/Kota</option>')
-                    $.each(html.data, function(key, item) {
-                        $('#city_id').append('<option value="'+item.id+'">'+item.name+'</option>')
-                    })
-                }
-            });
-        })
+    //MAKA AKAN MELAKUKAN REQUEST KE URL /API/CITY
+    //DAN MENGIRIMKAN DATA PROVINCE_ID
+    $.ajax({
+        url: "{{ url('/api/city') }}",
+        type: "GET",
+        data: {
+            province_id: $(this).val()
+        },
+        success: function(html) {
+            //SETELAH DATA DITERIMA, SELEBOX DENGAN ID CITY_ID DI KOSONGKAN
+            $('#city_id').empty()
 
-        //LOGICNYA SAMA DENGAN CODE DIATAS HANYA BERBEDA OBJEKNYA SAJA
-        $('#city_id').on('change', function() {
-            $.ajax({
-                url: "{{ url('/api/district') }}",
-                type: "GET",
-                data: { city_id: $(this).val() },
-                success: function(html){
-                    $('#district_id').empty()
-                    $('#district_id').append('<option value="">Pilih Kecamatan</option>')
-                    $.each(html.data, function(key, item) {
-                        $('#district_id').append('<option value="'+item.id+'">'+item.name+'</option>')
-                    })
-                }
-            });
-        })
+            //KEMUDIAN APPEND DATA BARU YANG DIDAPATKAN DARI HASIL REQUEST VIA AJAX
+            //UNTUK MENAMPILKAN DATA KABUPATEN / KOTA
+            $('#city_id').append('<option value="">Pilih Kabupaten/Kota</option>')
+            $.each(html.data, function(key, item) {
+                $('#city_id').append('<option value="' + item.city_id + '">' + item
+                    .city_name +
+                    '</option>')
+            })
+        }
+    });
+})
+    
+
+        // //LOGICNYA SAMA DENGAN CODE DIATAS HANYA BERBEDA OBJEKNYA SAJA
+        // $('#city_id').on('change', function() {
+        //     $.ajax({
+        //         url: "{{ url('/api/district') }}",
+        //         type: "GET",
+        //         data: { city_id: $(this).val() },
+        //         success: function(html){
+        //             $('#district_id').empty()
+        //             $('#district_id').append('<option value="">Pilih Kecamatan</option>')
+        //             $.each(html.data, function(key, item) {
+        //                 $('#district_id').append('<option value="'+item.id+'">'+item.name+'</option>')
+        //             })
+        //         }
+        //     });
+        // })
     </script>
 @endsection

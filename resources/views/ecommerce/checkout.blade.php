@@ -38,14 +38,31 @@
                         @csrf
                         <div class="col-md-12 form-group p_star">
                             <label for="">Nama Penerima</label>
-                            <input type="text" class="form-control" id="first" name="customer_name" required>
-                            <p class="text-danger">{{ $errors->first('customer_name') }}</p>
+                            @if (auth()->guard('customer')->check())
+                            <input type="name" class="form-control" id="first" name="costumer_name"
+                                value="{{ auth()->guard('customer')->user()->name }}" required
+                                {{ auth()->guard('customer')->check() ? 'readonly':'' }}>
+                            @else
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            @endif
+                            <p class="text-danger">{{ $errors->first('email') }}</p>
                         </div>
                         <div class="col-md-6 form-group p_star">
+                            <label for="">Nomor HP</label>
+                            @if (auth()->guard('customer')->check())
+                            <input type="nohp" class="form-control" id="first" name="phone_number"
+                                value="{{ auth()->guard('customer')->user()->phone_number }}" required
+                                {{ auth()->guard('customer')->check() ? 'readonly':'' }}>
+                            @else
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            @endif
+                            <p class="text-danger">{{ $errors->first('email') }}</p>
+                        </div>
+                        <!-- <div class="col-md-6 form-group p_star">
                             <label for="">No Telepon</label>
                             <input type="text" class="form-control" id="number" name="customer_phone" required>
                             <p class="text-danger">{{ $errors->first('customer_phone') }}</p>
-                        </div>
+                        </div> -->
                         <div class="col-md-6 form-group p_star">
                             <label for="">Email</label>
                             @if (auth()->guard('customer')->check())
@@ -170,6 +187,7 @@ $('#province_id').on('change', function() {
 
             //KEMUDIAN APPEND DATA BARU YANG DIDAPATKAN DARI HASIL REQUEST VIA AJAX
             //UNTUK MENAMPILKAN DATA KABUPATEN / KOTA
+            $('#courier').append('<option value="">Pilih Kurir</option>')
             $('#city_id').append('<option value="">Pilih Kabupaten/Kota</option>')
             $.each(html.data, function(key, item) {
                 $('#city_id').append('<option value="' + item.city_id + '">' + item
@@ -183,25 +201,7 @@ $('#province_id').on('change', function() {
 //LOGICNYA SAMA DENGAN CODE DIATAS HANYA BERBEDA OBJEKNYA SAJA
 $('#city_id').on('change', function() {
     $('#courier').empty()
-
-    // var province_id = $('#province_id').val();
-    // var city_id = $('#city_id').val();
-    // $.ajax({
-    //     url: "{{ url('/api/district') }}",
-    //     type: "GET",
-    //     data: {
-    //         city_id: city_id,
-    //         province_id: province_id
-    //     },
-    //     success: function(html) {
-    //         $('#district_id').empty()
-    //         $('#district_id').append('<option value="">Pilih Kecamatan</option>')
-    //         $.each(html.data, function(key, item) {
-    //             $('#district_id').append('<option value="' + item.id + '">' + item.name +
-    //                 '</option>')
-    //         });
-    //     }
-    // });
+  
     $('#courier').append('<option value="">Pilih Kurir</option>');
     $('#courier').append('<option value="jne">JNE</option>');
     $('#courier').append('<option value="pos">POS INDONESIA</option>');
@@ -209,48 +209,14 @@ $('#city_id').on('change', function() {
 
 })
 
-// $('#district_id').on('change', function() {
-//     $('#courier').empty()
-//     $('#courier').append('<option value="">Loading...</option>')
-
-//     $.ajax({
-//         url: "{{ url('/api/cost') }}",
-//         type: "POST",
-//         data: {
-//             destination: $(this).val(),
-//             weight: $('#weight').val()
-//         },
-//         success: function(html) {
-
-//             $('#courier').empty()
-//             $('#courier').append('<option value="">Pilih Kurir</option>')
-
-//             //LOOPING DATA ONGKOS KIRIM
-//             $.each(html.data.results, function(key, item) {
-//                 let courier = item.courier + ' - ' + item.service + ' (Rp ' + item.cost +
-//                     ')'
-//                 let value = item.courier + '-' + item.service + '-' + item.cost
-//                 //DAN MASUKKAN KE DALAM OPTION SELECT BOX
-//                 $('#courier').append('<option value="' + value + '">' + courier +
-//                     '</option>')
-//             })
-//         }
-//     });
-// })
-
 $('#courier').on('change', function() {
     // ini city from diganti ya def pakai sesseion utk mainkan data nya data distric di tb_costumer diganti ke city karna ongkir batas di citu 
-    var city_from = 318;
+    var city_from = 93;
     // endd
 
     var city_id = $('#city_id').val();
     var sub_total = $('#total_all').val();
-    // let split = $(this).val().split('-')
-    // $('#ongkir').text('Rp ' + split[2])
 
-    // let subtotal = "{{ $subtotal }}"
-    // let total = parseInt(subtotal) + parseInt(split['2'])
-    // $('#total').text('Rp' + total)
     $.ajax({
         url: "{{ url('/api/cost') }}",
         type: "POST",
@@ -265,7 +231,7 @@ $('#courier').on('change', function() {
                 $('#cost').val(item.costs[0].cost[0].value);
                 $('#ongkir').html("Rp " + item.costs[0].cost[0].value);
                 var total = parseInt(sub_total) + parseInt(item.costs[0].cost[0].value);
-                $('#total').html(total);
+                $('#total').html("Rp " + total);
             })
         }
     });
