@@ -13,7 +13,7 @@ class OrderController extends Controller
 {
     public function index() 
     {
-        $orders = Order::with(['customer.district.city.province'])->withCount('return')->orderBy('created_at', 'DESC');
+        $orders = Order::with(['customer.city.province'])->withCount('return')->orderBy('created_at', 'DESC');
 
         if(request()->q != '') {
             $orders = $orders->where(function($q) {
@@ -34,7 +34,7 @@ class OrderController extends Controller
     public function view($invoice) 
     {
         if (Order::where('invoice', $invoice)->exists()){
-            $order = Order::with(['customer.district.city.province', 'payment', 'details.product'])->withCount('return')->where('invoice', $invoice)->first();
+            $order = Order::with(['customer.city.province', 'payment', 'details.product'])->withCount('return')->where('invoice', $invoice)->first();
             return view('orders.view', compact('order'));
         }else {
             return redirect()->back();
@@ -90,7 +90,7 @@ class OrderController extends Controller
             $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         }
     
-        $orders = Order::with(['customer.district'])->whereBetween('created_at', [$start, $end])->get();
+        $orders = Order::with(['customer.city'])->whereBetween('created_at', [$start, $end])->get();
 
         return view('report.index', compact('orders'));
     }
@@ -102,7 +102,7 @@ class OrderController extends Controller
         $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
         $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
 
-        $orders = Order::with(['customer.district'])->whereBetween('created_at', [$start, $end])->get();
+        $orders = Order::with(['customer.city'])->whereBetween('created_at', [$start, $end])->get();
         $pdf = PDF::loadView('report.orderpdf', compact('orders', 'date'));
 
         $startpdf = Carbon::parse($date[0])->format('d-F-Y');
@@ -121,7 +121,7 @@ class OrderController extends Controller
             $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         }
 
-        $orders = Order::with(['customer.district'])->has('return')->whereBetween('created_at', [$start, $end])->get();
+        $orders = Order::with(['customer.city'])->has('return')->whereBetween('created_at', [$start, $end])->get();
         return view('report.return', compact('orders'));
     }
 
@@ -131,7 +131,7 @@ class OrderController extends Controller
         $start = Carbon::parse($date[0])->format('Y-m-d') . ' 00:00:01';
         $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
 
-        $orders = Order::with(['customer.district'])->has('return')->whereBetween('created_at', [$start, $end])->get();
+        $orders = Order::with(['customer.city'])->has('return')->whereBetween('created_at', [$start, $end])->get();
         $pdf = PDF::loadView('report.returnpdf', compact('orders', 'date'));
         
         $startpdf = Carbon::parse($date[0])->format('d-F-Y');

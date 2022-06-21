@@ -71,7 +71,7 @@
                                         </tr>
                                         <tr>
                                             <th>Alamat</th>
-                                            <td>{{ $order->customer_address }} {{ $order->customer->district->name }} - {{  $order->customer->district->city->name}}, {{ $order->customer->district->city->province->name }}</td>
+                                            <td>{{ $order->customer_address }} {{  $order->customer->city->name}}, {{ $order->customer->city->province->name }}</td>
                                         </tr>
                                         <tr>
                                             <th>Order Status</th>

@@ -58,11 +58,7 @@
                             @endif
                             <p class="text-danger">{{ $errors->first('email') }}</p>
                         </div>
-                        <!-- <div class="col-md-6 form-group p_star">
-                            <label for="">No Telepon</label>
-                            <input type="text" class="form-control" id="number" name="customer_phone" required>
-                            <p class="text-danger">{{ $errors->first('customer_phone') }}</p>
-                        </div> -->
+
                         <div class="col-md-6 form-group p_star">
                             <label for="">Email</label>
                             @if (auth()->guard('customer')->check())
@@ -102,13 +98,6 @@
                             </select>
                             <p class="text-danger">{{ $errors->first('city_id') }}</p>
                         </div>
-                        <!-- <div class="col-md-12 form-group p_star">
-                            <label for="">Kecamatan</label>
-                            <select class="form-control" name="district_id" id="district_id" required>
-                                <option value="">Pilih Kecamatan</option>
-                            </select>
-                            <p class="text-danger">{{ $errors->first('district_id') }}</p>
-                        </div> -->
                         <div class="col-md-12 form-group p_star">
                             <label for="">Kurir</label>
                             <input type="hidden" name="weight" id="weight" value="{{ $weight }}">
@@ -117,7 +106,6 @@
                             </select>
                             <p class="text-danger">{{ $errors->first('courier') }}</p>
                         </div>
-                        <!-- ADAPUN DATA KOTA DAN KECAMATAN AKAN DI RENDER SETELAH PROVINSI DIPILIH -->
 
                 </div>
                 <div class="col-lg-4">
@@ -131,7 +119,7 @@
                             </li>
                             @foreach ($carts as $cart)
                             <li>
-                                <a href="#">{{ \Str::limit($cart['product_name'], 10) }}
+                                <a href="#">{{ \Str::limit($cart['product_name'], 20) }}
                                     <span class="middle">x {{ $cart['qty'] }}</span>
                                     <span class="last">Rp {{ number_format($cart['product_price']) }}</span>
                                 </a>

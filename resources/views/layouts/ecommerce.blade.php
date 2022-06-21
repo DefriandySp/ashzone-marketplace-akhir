@@ -170,10 +170,10 @@
 	<script src="{{ asset('ecommerce/vendors/owl-carousel/owl.carousel.min.js') }}"></script>
 	<script src="{{ asset('ecommerce/js/jquery.ajaxchimp.min.js') }}"></script>
 	<script src="{{ asset('ecommerce/vendors/counter-up/jquery.waypoints.min.js') }}"></script>
-	<script src="{{ asset('ecommerce/vendors/flipclock/timer.js') }}"></script>
+	<!-- <script src="{{ asset('ecommerce/vendors/flipclock/timer.js') }}"></script> -->
 	<script src="{{ asset('ecommerce/vendors/counter-up/jquery.counterup.js') }}"></script>
 	<script src="{{ asset('ecommerce/js/mail-script.js') }}"></script>
-	<script src="{{ asset('ecommerce/js/theme.js') }}"></script>
+	<!-- <script src="{{ asset('ecommerce/js/theme.js') }}"></script> -->
 
 	@yield('js')
 </body>

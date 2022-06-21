@@ -182,8 +182,8 @@ class CartController extends Controller
     {
         $province_id = $this->input->get('province_id');
         $city_id = $this->input->get('city_id');
-        var_dump($province_id);
-        var_dump($city_id);
+        // var_dump($province_id);
+        // var_dump($city_id);
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api.rajaongkir.com/starter/city?id='".$city_id."'&province='".$province_id."'",
@@ -298,7 +298,7 @@ class CartController extends Controller
 
     public function checkoutFinish($invoice)
     {
-        $order = Order::with(['district.city'])->where('invoice', $invoice)->first();
+        $order = Order::with(['city.province'])->where('invoice', $invoice)->first();
         if (Order::where('invoice', $invoice)->exists()){
             return view('ecommerce.checkout_finish', compact('order'));
         }else {
