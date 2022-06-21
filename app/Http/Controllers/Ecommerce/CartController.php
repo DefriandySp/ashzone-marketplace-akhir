@@ -177,15 +177,12 @@ class CartController extends Controller
         }
     }
 
-    public function getCity()
+    public function getCity(Request $request)
     {
-        $province_id = $this->input->get('province_id');
-        $city_id = $this->input->get('city_id');
-        // var_dump($province_id);
-        // var_dump($city_id);
+        $input = $request->all();
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.rajaongkir.com/starter/city?id='".$city_id."'&province='".$province_id."'",
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/city?province=".$input['province_id']."",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -198,12 +195,12 @@ class CartController extends Controller
             ),
         ));
 
-        $response = curl_exec($curl);
+       $response = curl_exec($curl);
         $err = curl_error($curl);
-
         curl_close($curl);
-        if($response){
-            return response()->json(['status' => 'success', 'data' => $response]);
+        $city = json_decode($response,TRUE);
+        if($city['rajaongkir']['status']['code'] == 200){
+            return response()->json(['status' => 'success', 'data' => $city['rajaongkir']['results']]);
         }else {
             return response()->json(['status' => 'failed', 'data' =>"data tidak ada"]);
 
@@ -217,15 +214,26 @@ class CartController extends Controller
             'customer_phone' => 'required',
             'email' => 'required|email',
             'customer_address' => 'required|string',
-            'province_id' => 'required|exists:provinces,id',
-            'city_id' => 'required|exists:cities,id',
+            'province_id' => 'required',
+            'city_id' => 'required',
             'courier' => 'required'
         ]);
 
+        //        $this->validate($request, [
+        //     'customer_name' => 'required|string|max:100',
+        //     'phone_number' => 'required',
+        //     'email' => 'required|email',
+        //     'customer_address' => 'required|string',
+        //     'province_id' => 'required',
+        //     'city_id' => 'required',
+        //     'courier' => 'required'
+        // ]);
+
+        $input = $request->all(); 
         //DATABASE TRANSACTION BERFUNGSI UNTUK MEMASTIKAN SEMUA PROSES SUKSES UNTUK KEMUDIAN DI COMMIT AGAR DATA BENAR BENAR DISIMPAN, JIKA TERJADI ERROR MAKA KITA ROLLBACK AGAR DATANYA SELARAS
         DB::beginTransaction();
         try {
-            $customer = Customer::where('email', $request->email)->first();
+            $customer = Customer::where('email', $input['email'])->first();
             //JIKA DIA TIDAK LOGIN DAN DATA CUSTOMERNYA ADA
             if (!auth()->guard('customer')->check() && $customer) {
                 return redirect()->back()->with(['error' => 'Silahkan Login Terlebih Dahulu']);
@@ -240,28 +248,28 @@ class CartController extends Controller
             if (!auth()->guard('customer')->check()) {
                 $password = Str::random(8); 
                 $customer = Customer::create([
-                    'name' => $request->customer_name,
-                    'email' => $request->email,
+                    'name' => $input['customer_name'],
+                    'email' => $input['email'],
                     'password' => $password, 
-                    'phone_number' => $request->customer_phone,
-                    'address' => $request->customer_address,
-                    'city_id' => $request->city_id,
+                    'phone_number' => $input['customer_phone'],
+                    'address' => $input['customer_address'],
+                    'city_id' => $input['city_id'],
                     'activate_token' => Str::random(30),
                     'status' => false
                 ]);
             }
 
-            $shipping = explode('-', $request->courier);
+            // $shipping = explode('-', $request->courier);
             $order = Order::create([
                 'invoice' => Str::random(4) . '-' . time(), 
                 'customer_id' => $customer->id,
-                'customer_name' => $request->customer_name,
-                'customer_phone' => $request->customer_phone,
-                'customer_address' => $request->customer_address,
-                'city_id' => $request->city_id,
+                'customer_name' => $input['customer_name'],
+                'customer_phone' => $input['customer_phone'],
+                'customer_address' => $input['customer_address'],
+                'city_id' => $input['city_id'],
                 'subtotal' => $subtotal,
-                'cost' => $shipping[2], 
-                'shipping' => $shipping[0] . '-' . $shipping[1]
+                'cost' => $input['cost'], 
+                'shipping' => $input['courier']
             ]);
 
             foreach ($carts as $row) {
@@ -284,7 +292,7 @@ class CartController extends Controller
             $cookie = cookie('e-carts', json_encode($carts), 2880);
             
             if (!auth()->guard('customer')->check()) {
-                Mail::to($request->email)->send(new CustomerRegisterMail($customer, $password));
+                Mail::to($input['email'])->send(new CustomerRegisterMail($customer, $password));
             }
             return redirect(route('front.finish_checkout', $order->invoice))->cookie($cookie);
         } catch (\Exception $e) {
