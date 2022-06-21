@@ -97,7 +97,7 @@ class OrderController extends Controller
 
     public function pdf($invoice) 
     {
-        $order = Order::with(['district.city.province', 'details', 'details.product', 'payment'])
+        $order = Order::with(['city.province', 'details', 'details.product', 'payment'])
                 ->where('invoice', $invoice)->first();
         if(Order::where('invoice', $invoice)->exists()) {
             if(\Gate::forUser(auth()->guard('customer')->user())->allows('order-view', $order)) {

@@ -11,7 +11,7 @@ class Order extends Model
     
     public function city()
     {
-        return $this->belongsTo(Province::class);
+        return $this->belongsTo(City::class);
     }
 
     //Relasi ke details

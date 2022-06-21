@@ -93,6 +93,7 @@ class CartController extends Controller
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_SSL_VERIFYPEER => 0,
              CURLOPT_POSTFIELDS => "origin=".$input['city_from']."&destination=".$input['city_id']."&weight=".$input['weight']."&courier=".$input['courier']."",
             CURLOPT_HTTPHEADER => array(
                 "content-type: application/x-www-form-urlencoded",
@@ -124,6 +125,7 @@ class CartController extends Controller
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_SSL_VERIFYPEER => 0,
             CURLOPT_HTTPHEADER => array(
                 "key: 4e06fbae528e77b0fb70b9919fe96891"
             ),
@@ -157,6 +159,7 @@ class CartController extends Controller
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_SSL_VERIFYPEER => 0,
             CURLOPT_HTTPHEADER => array(
                 "key: 4e06fbae528e77b0fb70b9919fe96891"
             ),
@@ -189,6 +192,7 @@ class CartController extends Controller
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_SSL_VERIFYPEER => 0,
             CURLOPT_HTTPHEADER => array(
                 "key: 4e06fbae528e77b0fb70b9919fe96891"
             ),
@@ -198,7 +202,7 @@ class CartController extends Controller
         $err = curl_error($curl);
 
         curl_close($curl);
-        if(response){
+        if($response){
             return response()->json(['status' => 'success', 'data' => $response]);
         }else {
             return response()->json(['status' => 'failed', 'data' =>"data tidak ada"]);
@@ -213,8 +217,8 @@ class CartController extends Controller
             'customer_phone' => 'required',
             'email' => 'required|email',
             'customer_address' => 'required|string',
-            'province_id' => 'required|exists:cities,id',
-            'id' => 'required|exists:cities,id',
+            'province_id' => 'required|exists:provinces,id',
+            'city_id' => 'required|exists:cities,id',
             'courier' => 'required'
         ]);
 

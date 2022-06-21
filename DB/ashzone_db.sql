@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2022 at 05:29 PM
+-- Generation Time: Jun 20, 2022 at 08:04 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -582,7 +582,7 @@ CREATE TABLE `customers` (
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone_number` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `district_id` bigint(20) UNSIGNED NOT NULL,
+  `city_id` bigint(20) UNSIGNED NOT NULL,
   `activate_token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -593,9 +593,10 @@ CREATE TABLE `customers` (
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `name`, `email`, `password`, `phone_number`, `address`, `district_id`, `activate_token`, `status`, `created_at`, `updated_at`) VALUES
-(3, 'Hapis', 'Hapis@member.com', '$2y$10$MGWmyff7CrSUvi9GzQ61Vu7K2m.FPm9GO.i.p3zLvrDOSRbD6Op8.', '0823927392323', 'Jl. Sarolangun Lumin', 4735, NULL, 1, '2022-05-28 04:26:51', '2022-05-28 04:27:06'),
-(4, 'Bima Mayesa', 'bimamayes@gmail.com', '$2y$10$tElMJ/NU7hzCTeSuhMqd/eWL1UReUKy6hTqVpGCKglA7eRT8WBfWq', '08232139123', 'Jl. Sarolangun Lumin', 4541, NULL, 1, '2022-06-16 23:16:01', '2022-06-16 23:16:24');
+INSERT INTO `customers` (`id`, `name`, `email`, `password`, `phone_number`, `address`, `city_id`, `activate_token`, `status`, `created_at`, `updated_at`) VALUES
+(3, 'Hapis', 'Hapis@member.com', '$2y$10$MGWmyff7CrSUvi9GzQ61Vu7K2m.FPm9GO.i.p3zLvrDOSRbD6Op8.', '0823927392323', 'Jl Pariaman', 337, NULL, 1, '2022-05-28 04:26:51', '2022-06-20 10:29:24'),
+(4, 'Bima Mayesa', 'bimamayes@gmail.com', '$2y$10$tElMJ/NU7hzCTeSuhMqd/eWL1UReUKy6hTqVpGCKglA7eRT8WBfWq', '08232139123', 'Jl. Sarolangun Lumin', 4541, NULL, 1, '2022-06-16 23:16:01', '2022-06-16 23:16:24'),
+(5, 'dika', 'handika@gmail.com', '$2y$10$8LHvfLVsW5/LPGUOoxGxwesjaSrszHBKM/WDRcpWDtHAvFqmwLQ96', '08238238283', 'Jl. Siteba', 318, NULL, 1, '2022-06-20 01:06:19', '2022-06-20 01:06:36');
 
 -- --------------------------------------------------------
 
@@ -7707,7 +7708,7 @@ CREATE TABLE `orders` (
   `customer_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `customer_phone` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `customer_address` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `district_id` bigint(20) UNSIGNED NOT NULL,
+  `city_id` bigint(20) UNSIGNED NOT NULL,
   `subtotal` int(11) NOT NULL,
   `cost` int(11) NOT NULL DEFAULT 0,
   `shipping` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -7807,25 +7808,25 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `slug`, `category_id`, `description`, `image`, `price`, `weight`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Baju Kaos Lengan Panjang \"Merepet\"', 'baju-kaos-lengan-panjang-merepet', 10, '<p>Baju Kaos buatan sarang kapuyuak dengan title&nbsp;&quot;Marepet&quot; terbuat dari bahan yang lembut juga nyaman dengan kualitas tinggi oleh sarang kapuyuak.</p>', '1653495607baju-kaos-merpet.jpg', 95000, 1200, 1, '2022-05-25 09:20:07', '2022-06-15 22:59:22'),
-(2, 'Baju Kaos \"Ba Ambuih Nasi Dingin\"', 'baju-kaos-ba-ambuih-nasi-dingin', 8, '<p>Baju Kaos buatan sarang kapuyuak dengan title&nbsp;&quot;Ba ambuih nasi dingin&quot; terbuat dari bahan yang lembut juga nyaman dengan kualitas tinggi oleh sarang kapuyuak.</p>', '1653496019baju-kaos-ba-ambuih-nasi-dingin.jpg', 95000, 1000, 1, '2022-05-25 09:26:59', '2022-06-15 23:01:38'),
-(3, 'Baju Kaos \"Ma Den Tau\"', 'baju-kaos-ma-den-tau', 10, '<p>Baju Kaos buatan sarang kapuyuak dengan title&nbsp;&quot;Ma Den Tau&quot; terbuat dari bahan yang lembut juga nyaman dengan kualitas tinggi oleh sarang kapuyuak.</p>', '1653496208baju-kaos-ma-den-tau.jpg', 95000, 1000, 1, '2022-05-25 09:30:08', '2022-06-15 23:01:26'),
-(4, 'Sweater Kapuyuak \"Baju Nan Kayo\"', 'sweater-kapuyuak-baju-nan-kayo', 8, '<p>Sweater sarang kapuyuak dengan tag &quot;Baju Nan Kayo&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai sweater dari sarang kapuyuak</p>', '1653661910sweater-kapuyuak-baju-nan-kayo.jpg', 130000, 200, 1, '2022-05-27 07:31:50', '2022-06-15 22:59:09'),
-(5, 'Baju Kaos Lengan Panjang \"Palala\"', 'baju-kaos-lengan-panjang-palala', 11, '<p>Baju kaos lengan panjang sarang kapuyuak dengan tag &quot;Palala&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai kaos lengan panjang dari sarang kapuyuak</p>', '1653662121baju-kaos-lengan-panjang-palala.jpg', 98000, 1100, 1, '2022-05-27 07:35:21', '2022-06-15 23:01:16'),
-(6, 'Jaket \"Kapuyuak\"', 'jaket-kapuyuak', 8, '<p>Jaket sarang kapuyuak dengan tag &quot;Kapuyuak&quot; yang dibuat dengan bahan dengan kualitas premium original kapuyuak&nbsp;yang membuat pemakai merasa nyaman dan tidak gerah saat memakai jaket dari sarang kapuyuak</p>', '1653662221jaket-kapuyuak.jpg', 135000, 1200, 1, '2022-05-27 07:37:01', '2022-06-15 23:01:08'),
-(7, 'Jaket \"Urang Lamo\"', 'jaket-urang-lamo', 11, '<p>Jaket sarang kapuyuak dengan tag &quot;Urang Lamo&quot; yang dibuat dengan bahan dengan kualitas premium original kapuyuak&nbsp;yang membuat pemakai merasa nyaman dan tidak gerah saat memakai jaket dari sarang kapuyuak</p>', '1653662291jaket-urang-lamo.jpg', 135000, 1200, 1, '2022-05-27 07:38:11', '2022-06-15 22:58:57'),
-(8, 'Baju Kerah \"Basi Tuo\"', 'baju-kerah-basi-tuo', 9, '<p>Baju Kerah &quot;Basi Tuo&quot; dibuat dengan bahan premium original sarang kapuyuak dengan hasil yang disempurnakan membuat nyaman dalam pemakaian indorr maupun outdoor</p>', '1653662401baju-kerah-basi-tuo.jpg', 100000, 1100, 1, '2022-05-27 07:40:01', '2022-06-15 23:01:00'),
-(9, 'Baju Kerah \"Minang\"', 'baju-kerah-minang', 11, '<p>Baju Kerah &quot;Minang&quot; dibuat dengan bahan premium original sarang kapuyuak dengan hasil yang disempurnakan membuat nyaman dalam pemakaian indorr maupun outdoor</p>', '1653662747baju-kerah-minang.jpg', 100000, 1100, 1, '2022-05-27 07:45:47', '2022-06-15 23:00:53'),
-(10, 'Baju Kaos Lengan Panjang \"Pantang Taimpik\"', 'baju-kaos-lengan-panjang-pantang-taimpik', 9, '<p>Baju kaos lengan panjang sarang kapuyuak dengan tag &quot;Pantang Taimpik&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai kaos lengan panjang dari sarang kapuyuak</p>', '1653662825baju-kaos-lengan-panjang-pantang-taimpik.jpg', 98000, 1100, 1, '2022-05-27 07:47:05', '2022-06-15 23:00:46'),
-(11, 'Baju Kaos Lengan Panjang \"Rang Kampuang\"', 'baju-kaos-lengan-panjang-rang-kampuang', 11, '<p>Baju Kaos buatan sarang kapuyuak dengan title&nbsp;&quot;Rang Kampuang&quot; terbuat dari bahan yang lembut juga nyaman dengan kualitas tinggi oleh sarang kapuyuak.</p>', '1653663094baju-kaos-lengan-panjang-rang-kampuang.jpg', 95000, 1100, 1, '2022-05-27 07:51:34', '2022-06-15 23:00:40'),
-(12, 'Sweater Kapuyuak \"Minang Its Me\"', 'sweater-kapuyuak-minang-its-me', 8, '<p>Sweater sarang kapuyuak dengan tag &quot;Minang Its Me&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai sweater dari sarang kapuyuak</p>', '1653663503sweater-kapuyuak-minang-its-me.jpg', 130000, 1100, 1, '2022-05-27 07:58:23', '2022-06-15 22:58:25'),
-(13, 'Sweater Kapuyuak \"Pitih Masuak\"', 'sweater-kapuyuak-pitih-masuak', 8, '<p>Sweater sarang kapuyuak dengan tag &quot;Pitih Masuak&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai sweater dari sarang kapuyuak</p>', '1653663617sweater-kapuyuak-pitih-masuak.jpg', 130000, 1100, 1, '2022-05-27 08:00:17', '2022-06-15 22:58:32'),
-(14, 'Sweater Kapuyuak \"Urang Awak\"', 'sweater-kapuyuak-urang-awak', 8, '<p>Sweater sarang kapuyuak dengan tag &quot;Urang Awak&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai sweater dari sarang kapuyuak</p>', '1653663659sweater-kapuyuak-urang-awak.jpg', 130000, 1100, 1, '2022-05-27 08:00:59', '2022-06-15 22:58:39'),
-(15, 'Tarompa Jelly Kapuyuak', 'tarompa-jelly-kapuyuak', 8, '<p>Tarompa Jelly Original Kapuyuak</p>', '1653664618tarompa-jelly-kapuyuak.jpg', 35000, 1000, 1, '2022-05-27 08:16:58', '2022-06-15 23:00:23'),
-(16, 'Tas \"BAJARAK MANGKO TARAGAK\"', 'tas-bajarak-mangko-taragak', 9, '<p>Tas Kampia &quot;Bajarak Mangko Taragak&quot;</p>', '1653664718tas-bajarak-mangko-taragak.jpg', 120000, 1000, 1, '2022-05-27 08:18:38', '2022-06-15 23:00:18'),
-(17, 'Tas Kampia \"Lenyai\"', 'tas-kampia-lenyai', 11, '<p>Tas Kampia &quot;Lenyai&quot;</p>', '1653664839tas-kampia-lenyai.jpg', 120000, 1000, 1, '2022-05-27 08:20:39', '2022-06-15 23:00:30'),
-(18, 'Tas Kampia \"Takana Juo\"', 'tas-kampia-takana-juo', 11, '<p>Tas Kampia &quot;Takana Juo&quot;</p>', '1653664915tas-kampia-takana-juo.jpg', 120000, 1000, 1, '2022-05-27 08:21:55', '2022-06-15 23:00:12'),
-(19, 'Topi \"Cap Mau\"', 'topi-cap-mau', 11, '<p>Topi &quot;Cap Mau&quot;</p>', '1653665041topi-cap-mau.jpg', 75000, 1000, 1, '2022-05-27 08:24:01', '2022-06-15 23:00:06');
+(1, 'Baju Kaos Lengan Panjang \"Merepet\"', 'baju-kaos-lengan-panjang-merepet', 10, '<p>Baju Kaos buatan sarang kapuyuak dengan title&nbsp;&quot;Marepet&quot; terbuat dari bahan yang lembut juga nyaman dengan kualitas tinggi oleh sarang kapuyuak.</p>', '1655705015baju-kaos-lengan-panjang-merepet.jpg', 95000, 1200, 1, '2022-05-25 09:20:07', '2022-06-19 23:03:35'),
+(2, 'Baju Kaos \"Ba Ambuih Nasi Dingin\"', 'baju-kaos-ba-ambuih-nasi-dingin', 8, '<p>Baju Kaos buatan sarang kapuyuak dengan title&nbsp;&quot;Ba ambuih nasi dingin&quot; terbuat dari bahan yang lembut juga nyaman dengan kualitas tinggi oleh sarang kapuyuak.</p>', '1655705004baju-kaos-ba-ambuih-nasi-dingin.jpg', 95000, 1000, 1, '2022-05-25 09:26:59', '2022-06-19 23:03:24'),
+(3, 'Baju Kaos \"Ma Den Tau\"', 'baju-kaos-ma-den-tau', 10, '<p>Baju Kaos buatan sarang kapuyuak dengan title&nbsp;&quot;Ma Den Tau&quot; terbuat dari bahan yang lembut juga nyaman dengan kualitas tinggi oleh sarang kapuyuak.</p>', '1655704997baju-kaos-ma-den-tau.jpg', 95000, 1000, 1, '2022-05-25 09:30:08', '2022-06-19 23:03:17'),
+(4, 'Sweater Kapuyuak \"Baju Nan Kayo\"', 'sweater-kapuyuak-baju-nan-kayo', 8, '<p>Sweater sarang kapuyuak dengan tag &quot;Baju Nan Kayo&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai sweater dari sarang kapuyuak</p>', '1655704989sweater-kapuyuak-baju-nan-kayo.jpg', 130000, 200, 1, '2022-05-27 07:31:50', '2022-06-19 23:03:09'),
+(5, 'Baju Kaos Lengan Panjang \"Palala\"', 'baju-kaos-lengan-panjang-palala', 11, '<p>Baju kaos lengan panjang sarang kapuyuak dengan tag &quot;Palala&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai kaos lengan panjang dari sarang kapuyuak</p>', '1655704980baju-kaos-lengan-panjang-palala.jpg', 98000, 1100, 1, '2022-05-27 07:35:21', '2022-06-19 23:03:00'),
+(6, 'Jaket \"Kapuyuak\"', 'jaket-kapuyuak', 8, '<p>Jaket sarang kapuyuak dengan tag &quot;Kapuyuak&quot; yang dibuat dengan bahan dengan kualitas premium original kapuyuak&nbsp;yang membuat pemakai merasa nyaman dan tidak gerah saat memakai jaket dari sarang kapuyuak</p>', '1655705030jaket-kapuyuak.jpg', 135000, 1200, 1, '2022-05-27 07:37:01', '2022-06-19 23:03:50'),
+(7, 'Jaket \"Urang Lamo\"', 'jaket-urang-lamo', 11, '<p>Jaket sarang kapuyuak dengan tag &quot;Urang Lamo&quot; yang dibuat dengan bahan dengan kualitas premium original kapuyuak&nbsp;yang membuat pemakai merasa nyaman dan tidak gerah saat memakai jaket dari sarang kapuyuak</p>', '1655704933jaket-urang-lamo.jpg', 135000, 1200, 1, '2022-05-27 07:38:11', '2022-06-19 23:02:13'),
+(8, 'Baju Kerah \"Basi Tuo\"', 'baju-kerah-basi-tuo', 9, '<p>Baju Kerah &quot;Basi Tuo&quot; dibuat dengan bahan premium original sarang kapuyuak dengan hasil yang disempurnakan membuat nyaman dalam pemakaian indorr maupun outdoor</p>', '1655704919baju-kerah-basi-tuo.jpg', 100000, 1100, 1, '2022-05-27 07:40:01', '2022-06-19 23:01:59'),
+(9, 'Baju Kerah \"Minang\"', 'baju-kerah-minang', 11, '<p>Baju Kerah &quot;Minang&quot; dibuat dengan bahan premium original sarang kapuyuak dengan hasil yang disempurnakan membuat nyaman dalam pemakaian indorr maupun outdoor</p>', '1655704907baju-kerah-minang.jpg', 100000, 1100, 1, '2022-05-27 07:45:47', '2022-06-19 23:01:47'),
+(10, 'Baju Kaos Lengan Panjang \"Pantang Taimpik\"', 'baju-kaos-lengan-panjang-pantang-taimpik', 9, '<p>Baju kaos lengan panjang sarang kapuyuak dengan tag &quot;Pantang Taimpik&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai kaos lengan panjang dari sarang kapuyuak</p>', '1655704886baju-kaos-lengan-panjang-pantang-taimpik.jpg', 98000, 1100, 1, '2022-05-27 07:47:05', '2022-06-19 23:01:26'),
+(11, 'Baju Kaos Lengan Panjang \"Rang Kampuang\"', 'baju-kaos-lengan-panjang-rang-kampuang', 11, '<p>Baju Kaos buatan sarang kapuyuak dengan title&nbsp;&quot;Rang Kampuang&quot; terbuat dari bahan yang lembut juga nyaman dengan kualitas tinggi oleh sarang kapuyuak.</p>', '1655704878baju-kaos-lengan-panjang-rang-kampuang.jpg', 95000, 1100, 1, '2022-05-27 07:51:34', '2022-06-19 23:01:18'),
+(12, 'Sweater Kapuyuak \"Minang Its Me\"', 'sweater-kapuyuak-minang-its-me', 8, '<p>Sweater sarang kapuyuak dengan tag &quot;Minang Its Me&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai sweater dari sarang kapuyuak</p>', '1655704869sweater-kapuyuak-minang-its-me.jpg', 130000, 1100, 1, '2022-05-27 07:58:23', '2022-06-19 23:01:09'),
+(13, 'Sweater Kapuyuak \"Pitih Masuak\"', 'sweater-kapuyuak-pitih-masuak', 8, '<p>Sweater sarang kapuyuak dengan tag &quot;Pitih Masuak&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai sweater dari sarang kapuyuak</p>', '1655704861sweater-kapuyuak-pitih-masuak.jpg', 130000, 1100, 1, '2022-05-27 08:00:17', '2022-06-19 23:01:01'),
+(14, 'Sweater Kapuyuak \"Urang Awak\"', 'sweater-kapuyuak-urang-awak', 8, '<p>Sweater sarang kapuyuak dengan tag &quot;Urang Awak&quot; yang dibuat dengan bahan dengan kualitas premium yang membuat pemakai merasa nyaman dan tidak gerah saat memakai sweater dari sarang kapuyuak</p>', '1655704853sweater-kapuyuak-urang-awak.jpg', 130000, 1100, 1, '2022-05-27 08:00:59', '2022-06-19 23:00:53'),
+(15, 'Tarompa Jelly Kapuyuak', 'tarompa-jelly-kapuyuak', 8, '<p>Tarompa Jelly Original Kapuyuak</p>', '1655704843tarompa-jelly-kapuyuak.jpg', 35000, 1000, 1, '2022-05-27 08:16:58', '2022-06-19 23:00:43'),
+(16, 'Tas \"BAJARAK MANGKO TARAGAK\"', 'tas-bajarak-mangko-taragak', 9, '<p>Tas Kampia &quot;Bajarak Mangko Taragak&quot;</p>', '1655704835tas-bajarak-mangko-taragak.jpg', 120000, 1000, 1, '2022-05-27 08:18:38', '2022-06-19 23:00:35'),
+(17, 'Tas Kampia \"Lenyai\"', 'tas-kampia-lenyai', 11, '<p>Tas Kampia &quot;Lenyai&quot;</p>', '1655704796tas-kampia-lenyai.jpg', 120000, 1000, 1, '2022-05-27 08:20:39', '2022-06-19 22:59:56'),
+(18, 'Tas Kampia \"Takana Juo\"', 'tas-kampia-takana-juo', 11, '<p>Tas Kampia &quot;Takana Juo&quot;</p>', '1655704788tas-kampia-takana-juo.jpg', 120000, 1000, 1, '2022-05-27 08:21:55', '2022-06-19 22:59:48'),
+(19, 'Topi \"Cap Mau\"', 'topi-cap-mau', 11, '<p>Topi &quot;Cap Mau&quot;</p>', '1655704775topi-cap-mau.jpg', 75000, 1000, 1, '2022-05-27 08:24:01', '2022-06-19 22:59:35');
 
 -- --------------------------------------------------------
 
@@ -8091,7 +8092,7 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `districts`
