@@ -47,8 +47,8 @@
                         @endif
                         <div class="col-md-12 form-group p_star">
                             <label for="">Nama Penerima</label>
-                            @if (auth()->guard('customer')->check())
                             <input type="name" class="form-control" id="first" name="customer_name"
+                            @if (auth()->guard('customer')->check())
                                 value="{{ auth()->guard('customer')->user()->name }}" required
                                 {{ auth()->guard('customer')->check() ? 'readonly':'' }}>
                             @else
@@ -58,8 +58,8 @@
                         </div>
                         <div class="col-md-6 form-group p_star">
                             <label for="">Nomor HP</label>
-                            @if (auth()->guard('customer')->check())
                             <input type="nohp" class="form-control" id="first" name="customer_phone"
+                            @if (auth()->guard('customer')->check())
                                 value="{{ auth()->guard('customer')->user()->phone_number }}" required
                                 {{ auth()->guard('customer')->check() ? 'readonly':'' }}>
                             @else
