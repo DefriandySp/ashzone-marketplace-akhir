@@ -236,7 +236,7 @@ class CartController extends Controller
             $customer = Customer::where('email', $input['email'])->first();
             //JIKA DIA TIDAK LOGIN DAN DATA CUSTOMERNYA ADA
             if (!auth()->guard('customer')->check() && $customer) {
-                return redirect()->back()->with(['error' => 'Silahkan Login Terlebih Dahulu']);
+                return redirect('/member/login')->with(['error' => 'Akun Anda Telah Terdaftar, Silahkan Login Terlebih Dahulu']);
             }
 
             $carts = $this->getCarts();

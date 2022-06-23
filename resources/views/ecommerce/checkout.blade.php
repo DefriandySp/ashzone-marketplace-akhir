@@ -80,7 +80,7 @@
                             <p class="text-danger">{{ $errors->first('email') }}</p>
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <label for="">Alamat Lengkap</label>
+                            <label for="">Alamat Penerima</label>
                             <input type="text" class="form-control" id="add1" name="customer_address" required>
                             <p class="text-danger">{{ $errors->first('customer_address') }}</p>
                         </div>

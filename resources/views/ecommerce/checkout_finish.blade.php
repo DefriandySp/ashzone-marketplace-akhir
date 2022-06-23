@@ -24,7 +24,7 @@
 <!--================Order Details Area =================-->
 <section class="order_details p_120">
     <div class="container">
-        <h3 class="title_confirmation">Terima kasih, pesanan anda telah kami terima.</h3>
+        <h3 class="title_confirmation alert alert-success">Terima kasih, pesanan anda telah kami terima.</h3>
         <div class="row order_d_inner">
             <div class="col-lg-6">
                 <div class="details_item">
@@ -81,7 +81,7 @@
                 <a class="main_btn" href="{{ route('customer.dashboard') }}">Go To Dashboard</a>
                 @else
                 <br>
-                <h3 class="title_confirmation text-center">Silahkan Periksa Email Anda Untuk Verifikasi</h3>
+                <h3 class="title_confirmation alert-warning text-center">Silahkan Periksa Email Anda Untuk Verifikasi Registrasi</h3>
                 @endif
             </div>
         </div>
