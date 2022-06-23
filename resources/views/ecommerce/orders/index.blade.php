@@ -79,7 +79,7 @@
                                                         <input type="hidden" name="order_id" value="{{ $row->id }}">
                                                         @if ($row->status == 3 && $row->return_count == 0)
                                                             <button class="btn btn-success btn-sm">Terima</button>
-                                                            <a href="{{ route('customer.order_return', $row->invoice) }}" class="btn btn-danger btn-sm mt-1">Return</a>
+                                                            <!-- <a href="{{ route('customer.order_return', $row->invoice) }}" class="btn btn-danger btn-sm mt-1">Return</a> -->
                                                         @endif
                                                     </form>
                                                 </td>

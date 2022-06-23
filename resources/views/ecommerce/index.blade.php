@@ -36,15 +36,17 @@
          		 @forelse($products as $row)
 					<div class="col col1">
 						<div class="f_p_item">
-							<div class="f_p_img">
-                				<img class="img-fluid" src="{{ asset('storage/products/' . $row->image) }}" alt="{{ $row->name }}">
+							<!-- <div class="f_p_img">
+                				<img class="img-fluid" src="{{ asset('storage/products/' . $row->image) }}" alt="{{ $row->name }}" >
 								<div class="p_icon">
 									<a href="{{ url('/product/' . $row->slug) }}">
 										<i class="lnr lnr-cart"></i>
 									</a>
 								</div>
-							</div>
-
+							</div> -->
+							<a href="{{ url('/product/' . $row->slug) }}" src="{{ asset('storage/products/' . $row->image) }}" alt="{{ $row->name }}" >
+							<img class="img-fluid" src="{{ asset('storage/products/' . $row->image) }}" alt="{{ $row->name }}" >
+							
               				<a href="{{ url('/product/' . $row->slug) }}">
                  			<h4>{{ $row->name }}</h4>
 							</a>
