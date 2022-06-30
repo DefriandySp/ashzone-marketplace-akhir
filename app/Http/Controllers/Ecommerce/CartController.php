@@ -13,8 +13,10 @@ use App\OrderDetail;
 use Illuminate\Support\Str;
 use DB;
 use App\Mail\CustomerRegisterMail;
+use Illuminate\Support\Facades\Auth;
 use Mail;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\Rules\Unique;
 
 class CartController extends Controller
 {
@@ -49,7 +51,7 @@ class CartController extends Controller
         }
 
         $cookie = cookie('e-carts', json_encode($carts), 2880);
-        return redirect()->back()->with(['success' => 'Produk Ditambahkan ke Keranjang'])->cookie($cookie);
+        return redirect()->back()->with(['success' => 'Produk Telah Ditambahkan ke Keranjang'])->cookie($cookie);
     }
 
     public function listCart()
@@ -77,7 +79,7 @@ class CartController extends Controller
                 }
             }
             $cookie = cookie('e-carts', json_encode($carts), 2880);
-            return redirect()->back()->cookie($cookie);
+            return redirect()->route('front.product')->cookie($cookie);
         }
     }
 
@@ -136,7 +138,6 @@ class CartController extends Controller
 
         curl_close($curl);
         $provinces = json_decode($response,TRUE);
-        // $provinces = Province::orderBy('created_at', 'DESC')->get();
         $carts = $this->getCarts(); 
         $subtotal = collect($carts)->sum(function($q) {
             return $q['qty'] * $q['product_price'];
@@ -144,6 +145,10 @@ class CartController extends Controller
         $weight = collect($carts)->sum(function($q) {
             return $q['qty'] * $q['weight'];
         });
+        if (!auth()->guard('customer')->check()){
+            return redirect()->route('customer.login')->with(['error' => 'Anda Belum Login, Silahkan Login Terlebih Dahulu']);
+            // var_dump('auth::guest');
+        }
         return view('ecommerce.checkout', compact('provinces', 'carts', 'subtotal', 'weight'));
     }
 
@@ -219,24 +224,15 @@ class CartController extends Controller
             'courier' => 'required'
         ]);
 
-        //        $this->validate($request, [
-        //     'customer_name' => 'required|string|max:100',
-        //     'phone_number' => 'required',
-        //     'email' => 'required|email',
-        //     'customer_address' => 'required|string',
-        //     'province_id' => 'required',
-        //     'city_id' => 'required',
-        //     'courier' => 'required'
-        // ]);
 
         $input = $request->all(); 
         //DATABASE TRANSACTION BERFUNGSI UNTUK MEMASTIKAN SEMUA PROSES SUKSES UNTUK KEMUDIAN DI COMMIT AGAR DATA BENAR BENAR DISIMPAN, JIKA TERJADI ERROR MAKA KITA ROLLBACK AGAR DATANYA SELARAS
         DB::beginTransaction();
         try {
             $customer = Customer::where('email', $input['email'])->first();
-            //JIKA DIA TIDAK LOGIN DAN DATA CUSTOMERNYA ADA
+            //JIKA DIA TIDAK LOGIN DAN DATA EMAIL CUSTOMERNYA ADA
             if (!auth()->guard('customer')->check() && $customer) {
-                return redirect('/member/login')->with(['error' => 'Akun Anda Telah Terdaftar, Silahkan Login Terlebih Dahulu']);
+                return redirect('/member/login')->with(['error' => 'Email Anda Telah Terdaftar, Silahkan Login Terlebih Dahulu']);
             }
 
             $carts = $this->getCarts();
@@ -266,6 +262,7 @@ class CartController extends Controller
                 'customer_name' => $input['customer_name'],
                 'customer_phone' => $input['customer_phone'],
                 'customer_address' => $input['customer_address'],
+                // 'category_name' => $input['customer_address'],
                 'city_id' => $input['city_id'],
                 'subtotal' => $subtotal,
                 'cost' => $input['cost'], 

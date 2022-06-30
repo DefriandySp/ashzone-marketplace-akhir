@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Http\Controllers\Ecommerce\OrderController as EcommerceOrderController;
 use Illuminate\Http\Request;
 use App\Order;
 use App\Mail\OrderMail;
 use Mail;
 use Carbon\Carbon;
 use PDF;
+use App\OrderDetail;
+use App\OrderDetail as AppOrderDetail;
+use CreateOrderDetailsTable;
 
 class OrderController extends Controller
 {
@@ -90,8 +95,12 @@ class OrderController extends Controller
             $end = Carbon::parse($date[1])->format('Y-m-d') . ' 23:59:59';
         }
     
-        $orders = Order::with(['customer.city'])->whereBetween('created_at', [$start, $end])->get();
+        $orders = Order::with(['customer.city'])->whereBetween('created_at', [$start, $end])->get();    
 
+        // $M_Order = new \App\OrderDetail();
+        // $order_detail  = $this->brand()->result(); 
+        // $order = OrderDetail::brand()->result();
+        
         return view('report.index', compact('orders'));
     }
 

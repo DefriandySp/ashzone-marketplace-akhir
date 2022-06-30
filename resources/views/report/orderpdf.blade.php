@@ -26,7 +26,7 @@
                     <td>
                         <strong>{{ $row->customer_name }}</strong><br>
                         <label><strong>Telp:</strong> {{ $row->customer_phone }}</label><br>
-                        <label><strong>Alamat:</strong> {{ $row->customer_address }} {{ $row->customer->city->name }} - {{  $row->customer->city->name}}, {{ $row->customer->city->province->name }}</label>
+                        <label><strong>Alamat:</strong> {{ $row->customer_address }} <br> {{ $row->customer->city->name }} - {{  $row->customer->city->name}}, {{ $row->customer->city->province->name }}</label>
                     </td>
                     <td>Rp {{ number_format($row->total) }}</td>
                     <td>{{ $row->created_at->format('d-m-Y') }}</td>

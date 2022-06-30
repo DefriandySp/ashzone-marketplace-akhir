@@ -88,10 +88,11 @@
                                             <td></td>
                                             <td>{{ $order->payment->transfer_date }}</td>
                                         </tr>
+                                        
                                         <tr>
                                             <td>Jumlah Transfer</td>
                                             <td></td>
-                                            <td>Rp {{ number_format($order->payment->amount) }}</td>
+                                            <td>Rp {{ number_format($order->total) }}</td>
                                         </tr>
                                         <tr>
                                             <td>Tujuan Transfer</td>

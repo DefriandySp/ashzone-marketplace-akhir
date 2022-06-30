@@ -1,25 +1,25 @@
 @extends('layouts.admin')
 
 @section('title')
-    <title>Laporan Order</title>
+<title>Laporan Order</title>
 @endsection
 
 @section('content')
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-              <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Orders</h1>
-              </div><!-- /.col -->
-              <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item active">Laporan Order</li>
-                </ol>
-              </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Orders</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Laporan Order</li>
+                    </ol>
+                </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -37,13 +37,13 @@
                         </div>
                         <div class="card-body">
                             @if (session('success'))
-                                <div class="alert alert-success">{{ session('success') }}</div>
+                            <div class="alert alert-success">{{ session('success') }}</div>
                             @endif
 
                             @if (session('error'))
-                                <div class="alert alert-danger">{{ session('error') }}</div>
+                            <div class="alert alert-danger">{{ session('error') }}</div>
                             @endif
-                            
+
                             <form action="{{ route('report.order') }}" method="get">
                                 <div class="input-group mb-3 col-md-4 float-right">
                                     <input type="text" id="created_at" name="date" class="form-control">
@@ -59,6 +59,7 @@
                                         <tr>
                                             <th>InvoiceID</th>
                                             <th>Pelanggan</th>
+                                            <th>Brand</th>
                                             <th>Total</th>
                                             <th>Status</th>
                                             <th>Tanggal</th>
@@ -71,8 +72,11 @@
                                             <td>
                                                 <strong>{{ $row->customer_name }}</strong><br>
                                                 <label><strong>Telp:</strong> {{ $row->customer_phone }}</label><br>
-                                                <label><strong>Alamat:</strong> {{ $row->customer_address }} {{ $row->customer->city->name }} - {{  $row->customer->city->name}}, {{ $row->customer->city->province->name }}</label>
+                                                <label><strong>Alamat:</strong> {{ $row->customer_address }} <br> {{ $row->customer->city->name }}, {{ $row->customer->city->province->name }}</label><br>
                                             </td>
+                                            
+                                            <td>(Nama Merek) x 5 <br> (Nama Merk) x 10 </td>
+
                                             <td>Rp {{ number_format($row->total) }}</td>
                                             <td>{!! $row->status_label !!}</td>
                                             <td>{{ $row->created_at->format('d-m-Y') }}</td>
@@ -92,28 +96,28 @@
             </div>
         </div>
     </section>
-  </div>
-  <!-- /.content-wrapper -->
+</div>
+<!-- /.content-wrapper -->
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-    <script>
-        $(document).ready(function() {
-            let start = moment().startOf('month')
-            let end = moment().endOf('month')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script>
+    $(document).ready(function() {
+        let start = moment().startOf('month')
+        let end = moment().endOf('month')
 
-            $('#exportpdf').attr('href', '/administrator/reports/reportorder/' + start.format('YYYY-MM-DD') + '+' + end.format('YYYY-MM-DD'))
+        $('#exportpdf').attr('href', '/administrator/reports/reportorder/' + start.format('YYYY-MM-DD') + '+' + end.format('YYYY-MM-DD'))
 
-            $('#created_at').daterangepicker({
-                startDate: start,
-                endDate: end
-            }, function(first, last) {
-                
-                $('#exportpdf').attr('href', '/administrator/reports/reportorder/' + first.format('YYYY-MM-DD') + '+' + last.format('YYYY-MM-DD'))
-            })
+        $('#created_at').daterangepicker({
+            startDate: start,
+            endDate: end
+        }, function(first, last) {
+
+            $('#exportpdf').attr('href', '/administrator/reports/reportorder/' + first.format('YYYY-MM-DD') + '+' + last.format('YYYY-MM-DD'))
         })
-    </script>
+    })
+</script>
 @endsection

@@ -32,9 +32,9 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th scope="col">Product</th>
-								<th scope="col">Price</th>
-								<th scope="col">Quantity</th>
+								<th scope="col">Produk</th>
+								<th scope="col">Harga</th>
+								<th scope="col">Jumlah</th>
 								<th scope="col">Total</th>
 							</tr>
 						</thead>
@@ -86,7 +86,7 @@
                             @endforelse
 							<tr class="bottom_button">
 								<td>
-									<button class="gray_btn">Update Cart</button>
+									<button class="gray_btn">Update Keranjang</button>
 								</td>
 								<td></td>
 								<td></td>
@@ -114,8 +114,10 @@
 								<td></td>
 								<td>
 									<div class="checkout_btn_inner">
-                                        <a class="gray_btn" href="{{ route('front.product') }}">Continue Shopping</a>
-                                        <a class="main_btn" href="{{ route('front.checkout') }}">Proceed to checkout</a>
+                                        <a class="gray_btn" href="{{ route('front.product') }}">Lanjutkan Belanja</a>
+										
+                                        <a class="main_btn" href="{{ route('front.checkout') }}">Proses ke checkout</a>
+										
 									</div>
 								</td>
 							</tr>
