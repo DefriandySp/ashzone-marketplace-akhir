@@ -79,14 +79,14 @@
                                             <td>
                                                 <strong>{{ $row->customer_name }}</strong><br>
                                                 <label><strong>Telp:</strong> {{ $row->customer_phone }}</label><br>
-                                                <label><strong>Alamat:</strong> {{ $row->customer_address }} {{ $row->customer->city->name }} - {{  $row->customer->city->name}}, {{ $row->customer->city->province->name }}</label>
+                                                <label><strong>Alamat:</strong> {{ $row->customer_address }} <br> {{  $row->customer->city->name}}, {{ $row->customer->city->province->name }}</label><br>
                                             </td>
                                             <td>Rp. {{ number_format($row->total) }}</td>
                                             <td>{{ $row->created_at->format('d-m-Y') }}</td>
                                             <td>
                                                 {!! $row->status_label !!}
                                                 @if ($row->return_count == 1)
-                                                    <a href="{{ route('orders.return', $row->invoice) }}">Permintaan Return</a>
+                                                    <!-- <a href="{{ route('orders.return', $row->invoice) }}">Permintaan Return</a> -->
                                                 @endif
                                             </td>
                                             <td>

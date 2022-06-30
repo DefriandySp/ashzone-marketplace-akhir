@@ -146,6 +146,7 @@
                                         <tr>
                                             <th>Produk</th>
                                             <th>Harga</th>
+                                            <th>Brand</th>
                                             <th>Quantity</th>
                                             <th>Berat</th>
                                         </tr>
@@ -153,6 +154,7 @@
                                         <tr>
                                             <td>{{ $row->product->name }}</td>
                                             <td>Rp {{ number_format($row->price) }}</td>
+                                            <td>{{ $row->product->category_id}}</td>
                                             <td>{{ $row->qty }}</td>
                                             <td>{{ $row->weight }} gr</td>
                                         </tr>

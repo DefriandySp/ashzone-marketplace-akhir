@@ -45,7 +45,7 @@
 				<div class="col-lg-5 offset-lg-1">
 					<div class="s_product_text">
 						<h3>{{ $product->name }}</h3>
-                        <h2>Rp {{ number_format($product->price) }}</h2>
+                        <h2>Rp. {{ number_format($product->price) }}</h2>
 						<ul class="list">
 							<li>
 								<a class="active" href="{{ url('/category/' . $product->category->slug) }}">
